@@ -9,33 +9,7 @@ import (
 
 func main() {
 	start := time.Now()
-	data, err := ioutil.ReadFile("primes_0B.bin")
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println("count: ", Scan(data))
-	fmt.Println(time.Since(start))
-}
-
-func Scan(data []byte) (count int) {
-	for i := 0; i < len(data); i++ {
-		for j := 0; j < 8; j++ {
-			if GetBit(data[i], j) {
-				count++
-			}
-		}
-	}
-	return count
-}
-
-func Unpack(data []byte) []bool {
-	res := make([]bool, len(data)*8)
-	for i := 0; i < len(data); i++ {
-		for j := 0; j < 8; j++ {
-			res[(i*8)+j] = GetBit(data[i], j)
-		}
-	}
-	return res
+	defer fmt.Println("Time elapsed: ", time.Since(start))
 }
 
 func Between(a, b int) []int {
@@ -43,7 +17,36 @@ func Between(a, b int) []int {
 }
 
 func Is(n int) bool {
-	return false
+	if n < 100 {
+		return isFromSlice(n)
+	} else {
+		return isFromRepo(n)
+	}
+}
+
+func isFromSlice(n int) bool {
+	switch n {
+	case 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97:
+		return true
+	default:
+		return false
+	}
+}
+
+func isFromRepo(n int) bool {
+	data, err := ioutil.ReadFile("primes_0B.bin")
+	if err != nil {
+		log.Fatal("Ooops. Couldn't read data file.")
+	}
+	if n%2 == 0 || n%5 == 0 {
+		return false
+	} else {
+		bucket := (n / 10) * 4
+		offset := map[int]int{1: 0, 3: 1, 7: 2, 9: 3}[n%10]
+		data1379index := bucket + offset
+		byteLocal, bit := data1379index/8, data1379index%8
+		return GetBit(data[byteLocal], bit)
+	}
 }
 
 func Upto(n int) []int {
