@@ -7,13 +7,29 @@ import (
 	"time"
 )
 
+var data []byte
+
 func main() {
 	start := time.Now()
-	defer fmt.Println("Time elapsed: ", time.Since(start))
+	bytes, err := ioutil.ReadFile("primes_0B.bin")
+	if err != nil {
+		log.Fatal("Ooops. Couldn't read data file.")
+	}
+	data = bytes // 18ms
+
+	// fmt.Println(Upto(1_000_000_000)) // Print time: 3min
+	// count := len(Upto(1_000_000_000)) // Algo time: 25s
+	fmt.Println("Time elapsed: ", time.Since(start))
 }
 
 func Between(a, b int) []int {
-	return []int{-11, -22, -33}
+	primes := []int{}
+	for i := a; i <= b; i++ {
+		if Is(i) {
+			primes = append(primes, i)
+		}
+	}
+	return primes
 }
 
 func Is(n int) bool {
@@ -34,10 +50,6 @@ func isFromSlice(n int) bool {
 }
 
 func isFromRepo(n int) bool {
-	data, err := ioutil.ReadFile("primes_0B.bin")
-	if err != nil {
-		log.Fatal("Ooops. Couldn't read data file.")
-	}
 	if n%2 == 0 || n%5 == 0 {
 		return false
 	} else {
@@ -50,7 +62,13 @@ func isFromRepo(n int) bool {
 }
 
 func Upto(n int) []int {
-	return []int{-11, -22, -33}
+	primes := []int{}
+	for i := 2; i <= n; i++ {
+		if Is(i) {
+			primes = append(primes, i)
+		}
+	}
+	return primes
 }
 
 func GetBit(data byte, index int) bool {
