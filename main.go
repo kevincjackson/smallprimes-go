@@ -9,17 +9,19 @@ import (
 
 var data []byte
 
-func main() {
-	start := time.Now()
+func init() {
 	bytes, err := ioutil.ReadFile("primes_0B.bin")
 	if err != nil {
 		log.Fatal("Ooops. Couldn't read data file.")
 	}
-	data = bytes // 18ms
+	data = bytes
+}
 
-	// fmt.Println(Upto(1_000_000_000)) // Print time: 3min
-	// count := len(Upto(1_000_000_000)) // Algo time: 25s
-	fmt.Println("Time elapsed: ", time.Since(start))
+func main() {
+	start := time.Now()
+	defer func() { fmt.Println("Time elapsed: ", time.Since(start)) }()
+
+	fmt.Println("Started...")
 }
 
 func Between(a, b int) []int {
@@ -34,13 +36,13 @@ func Between(a, b int) []int {
 
 func Is(n int) bool {
 	if n < 100 {
-		return isFromSlice(n)
+		return IsFromSlice(n)
 	} else {
-		return isFromRepo(n)
+		return IsFromRepo(n)
 	}
 }
 
-func isFromSlice(n int) bool {
+func IsFromSlice(n int) bool {
 	switch n {
 	case 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97:
 		return true
@@ -49,7 +51,7 @@ func isFromSlice(n int) bool {
 	}
 }
 
-func isFromRepo(n int) bool {
+func IsFromRepo(n int) bool {
 	if n%2 == 0 || n%5 == 0 {
 		return false
 	} else {
