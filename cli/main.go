@@ -6,7 +6,7 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/kevincjackson/smallprimes/spri"
+	"github.com/kevincjackson/smallprimes-go/spri"
 	"github.com/urfave/cli/v2"
 )
 
