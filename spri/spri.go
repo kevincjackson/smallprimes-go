@@ -1,22 +1,15 @@
 package spri
 
 import (
+	_ "embed"
 	"fmt"
-	"io/ioutil"
-	"log"
 	"time"
 )
 
+//go:embed primes_0B.bin
 var data []byte
 
-func init() {
-	bytes, err := ioutil.ReadFile("spri/primes_0B.bin")
-	if err != nil {
-		log.Fatal("Ooops. Couldn't read data file.")
-	}
-	data = bytes
-}
-
+// Unused: for testing only
 func main() {
 	start := time.Now()
 	defer func() { fmt.Println("Time elapsed: ", time.Since(start)) }()
