@@ -10,7 +10,7 @@ import (
 var data []byte
 
 func init() {
-	bytes, err := ioutil.ReadFile("primes_0B.bin")
+	bytes, err := ioutil.ReadFile("spri/primes_0B.bin")
 	if err != nil {
 		log.Fatal("Ooops. Couldn't read data file.")
 	}
