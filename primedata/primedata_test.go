@@ -1,8 +1,18 @@
-package spri
+package primedata
 
 import (
+	"fmt"
 	"testing"
 )
+
+// Unused: for testing only
+func main() {
+	// 	start := time.Now()
+	// 	defer func() { fmt.Println("Time elapsed: ", time.Since(start)) }()
+
+	// 	fmt.Println("Started...")
+	fmt.Println("Hi!")
+}
 
 func TestIs0(t *testing.T) {
 	AssertEqual(t, "Is(0)", Is(0), false)
