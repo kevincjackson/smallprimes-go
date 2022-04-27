@@ -21,7 +21,7 @@ func Between(a, b int) []int {
 func Is(n int) bool {
 	if n < 100 {
 		return isFromSlice(n)
-	} else if n < MaxInt {
+	} else if n <= MaxInt {
 		return isFromRepo(n)
 	} else {
 		panic("primedata: Input too large. Check the primedata.MaxInt value.")
