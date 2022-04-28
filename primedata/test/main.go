@@ -7,5 +7,7 @@ import (
 )
 
 func main() {
-	fmt.Println(primedata.Upto(999_000_000))
+	res := primedata.Between(999_000_000, 1_000_000_000)
+	fmt.Println(res)
+	fmt.Println("count:", len(res))
 }
