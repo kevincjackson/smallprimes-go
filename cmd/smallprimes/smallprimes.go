@@ -20,14 +20,22 @@ func init() {
 }
 
 func main() {
+	var formatArg string
 	app := cli.NewApp()
 	app.Name = "smallprimes"
-	app.EnableBashCompletion = true // ! Not working
+	app.Flags = []cli.Flag{
+		&cli.StringFlag{
+			Name:        "format",
+			Aliases:     []string{"f"},
+			Value:       "spaces",
+			Destination: &formatArg,
+			Usage:       "json|newlines|spaces",
+		},
+	}
 	app.Commands = []*cli.Command{
 		{
 			Name:        "is",
 			Usage:       "is 7",
-			UsageText:   "my usage text",
 			Description: "ask if a number is prime, returns true or false",
 			Action: func(c *cli.Context) error {
 				x, err := strconv.Atoi(c.Args().First())
@@ -53,7 +61,7 @@ func main() {
 				} else if x > primedata.MaxInt || y > primedata.MaxInt {
 					fmt.Println(large_num_err_msg)
 				} else {
-					format.PrintInts(primedata.Between(x, y), "json")
+					format.PrintInts(primedata.Between(x, y), formatArg)
 				}
 				return nil
 			},
@@ -69,7 +77,7 @@ func main() {
 				} else if x > primedata.MaxInt {
 					fmt.Println(large_num_err_msg)
 				} else {
-					format.PrintInts(primedata.Upto(x), "json")
+					format.PrintInts(primedata.Upto(x), formatArg)
 				}
 				return nil
 			},

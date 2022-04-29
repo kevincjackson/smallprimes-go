@@ -1,13 +1,26 @@
 package main
 
 import (
-	"fmt"
+	"log"
+	"os"
 
-	"github.com/kevincjackson/smallprimes-go/primedata"
+	"github.com/urfave/cli/v2"
 )
 
 func main() {
-	res := primedata.Between(999_000_000, 1_000_000_000)
-	fmt.Println(res)
-	fmt.Println("count:", len(res))
+	app := &cli.App{
+		Flags: []cli.Flag{
+			&cli.StringFlag{
+				Name:        "port",
+				Usage:       "Use a randomized port",
+				Value:       "hi",
+				DefaultText: "random",
+			},
+		},
+	}
+
+	err := app.Run(os.Args)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
