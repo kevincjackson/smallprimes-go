@@ -6,6 +6,7 @@ import (
 	"os"
 	"strconv"
 
+	"github.com/kevincjackson/smallprimes-go/internal/format"
 	"github.com/kevincjackson/smallprimes-go/pkg/primedata"
 	"github.com/urfave/cli/v2"
 )
@@ -52,7 +53,7 @@ func main() {
 				} else if x > primedata.MaxInt || y > primedata.MaxInt {
 					fmt.Println(large_num_err_msg)
 				} else {
-					fmt.Println(primedata.Between(x, y))
+					format.PrintInts(primedata.Between(x, y), "json")
 				}
 				return nil
 			},
@@ -68,7 +69,7 @@ func main() {
 				} else if x > primedata.MaxInt {
 					fmt.Println(large_num_err_msg)
 				} else {
-					fmt.Println(primedata.Upto(x))
+					format.PrintInts(primedata.Upto(x), "json")
 				}
 				return nil
 			},
