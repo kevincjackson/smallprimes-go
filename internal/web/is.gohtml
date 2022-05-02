@@ -12,16 +12,19 @@
             <a href="#">between</a>
         </nav>
         <form>
-            <div>
+            <div id="form-header">
                 <h2>
                     <label>is</label>
                 </h2>
             </div>
-            <div>
-                <input type="text" name="x" />
+            <div id="form-error">
+                <span> {{.Error}} </span>
+            </div>
+            <div id="form-input">
+                <input type="text" name="x" value="{{.X}}" />
             </div>
             <input type="submit" value="go" />
         </form>
-        <output id="result">oops - expecting an integer | true</output>
+        <output id="form-result">{{.Result}}</output>
     </body>
 </html>
