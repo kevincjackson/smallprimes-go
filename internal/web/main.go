@@ -2,16 +2,21 @@ package main
 
 import (
 	"fmt"
-	_ "html/template"
+	"html/template"
+	"log"
 	"net/http"
-	_ "os"
 	"strconv"
-	"text/template"
 
 	"github.com/kevincjackson/smallprimes-go/pkg/primedata"
 )
 
 const host = "localhost:3001"
+
+var t *template.Template
+
+func init() {
+	t = template.Must(template.ParseGlob("*.gohtml"))
+}
 
 func main() {
 	fmt.Printf("Web server runnung on %s\n", host)
@@ -29,10 +34,9 @@ func rootHandler(w http.ResponseWriter, r *http.Request) {
 func isHandler(w http.ResponseWriter, r *http.Request) {
 	var res XData
 	var err error
-	t, _ := template.ParseFiles("is.gohtml")
 	xstr := r.URL.Query().Get("x")
 	if xstr == "" {
-		res = XData{"2", "true", ""}
+		res = XData{"", "", ""}
 	} else {
 		xint, err := strconv.Atoi(xstr)
 		if err != nil {
@@ -46,9 +50,9 @@ func isHandler(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 	}
-	err = t.Execute(w, res)
+	err = t.ExecuteTemplate(w, "is.gohtml", res)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 }
 
