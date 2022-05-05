@@ -2,15 +2,25 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>Upto</title>
+        <title>Small Primes - Is</title>
     </head>
     <body>
-        <h1>Upto</h1>
+        <h1>Primes</h1>
+        {{template "nav"}}
         <form>
-            <label>upto</label>
-            <input type="text" name="x" />
+            <div id="form-header">
+                <h2>
+                    <label>upto</label>
+                </h2>
+            </div>
+            <div id="form-error">
+                <span> {{.Error}} </span>
+            </div>
+            <div id="form-input">
+                <input type="text" name="x" value="{{.X}}" autofocus/>
+            </div>
+            <input type="submit" value="go" />
         </form>
-        <h2>Result</h2>
-        <label id="result"></label>
+        <output id="form-result">{{.Result}}</output>
     </body>
 </html>

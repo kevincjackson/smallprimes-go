@@ -50,13 +50,7 @@ func isFromRepo(n int) bool {
 }
 
 func Upto(n int) []int {
-	primes := []int{}
-	for i := 2; i <= n; i++ {
-		if Is(i) {
-			primes = append(primes, i)
-		}
-	}
-	return primes
+	return Between(2, n)
 }
 
 func getBit(data byte, index int) bool {

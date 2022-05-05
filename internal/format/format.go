@@ -1,6 +1,12 @@
 package format
 
-import "fmt"
+import (
+	"fmt"
+	"strconv"
+	"strings"
+
+	"github.com/kevincjackson/smallprimes-go/pkg/primedata"
+)
 
 type sliceFormat struct {
 	Prefix    string
@@ -31,4 +37,25 @@ func PrintInts(xs []int, style string) {
 		}
 	}
 	fmt.Println()
+}
+
+// 10_000_000 => ~266ms (twice as fast as int -> string -> join)
+// Get rid of the last comma?
+func Between(x int, y int, prefix string, separator string, suffix string) string {
+	builder := strings.Builder{}
+	builder.Grow(y - x)
+	builder.WriteString(prefix)
+	if x < 2 {
+		x = 2
+	}
+	for i := x; i <= y; i++ {
+		if primedata.Is(i) {
+			builder.WriteString(strconv.Itoa(i))
+			if i < y-1 {
+				builder.WriteString(separator)
+			}
+		}
+	}
+	builder.WriteString(suffix)
+	return builder.String()
 }

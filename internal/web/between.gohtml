@@ -2,16 +2,26 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>Between</title>
+        <title>Smallprimes - Between</title>
     </head>
     <body>
-        <h1>Between</h1>
+        <h1>Primes</h1>
+        {{template "nav"}}
         <form>
-            <label>between</label>
-            <input type="text" name="a" />
-            <input type="text" name="b" />
+            <div id="form-header">
+                <h2>
+                    <label>between</label>
+                </h2>
+            </div>
+            <div id="form-error">
+                <span> {{.Error}} </span>
+            </div>
+            <div id="form-input">
+                <input type="text" name="x" value="{{.X}}"/>
+                <input type="text" name="y" value="{{.Y}}"/>
+            </div>
+            <input type="submit" value="go" />
         </form>
-        <h2>Result</h2>
-        <label id="result"></label>
+        <output id="form-result">{{.Result}}</output>
     </body>
 </html>

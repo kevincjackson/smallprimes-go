@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/kevincjackson/smallprimes-go/internal/format"
 	"github.com/kevincjackson/smallprimes-go/pkg/primedata"
 )
 
@@ -19,10 +20,12 @@ func init() {
 }
 
 func main() {
-	fmt.Printf("Web server runnung on %s\n", host)
+	log.Printf("Web server runnung on %s\n", host)
 
 	http.HandleFunc("/", rootHandler)
 	http.HandleFunc("/is", isHandler)
+	http.HandleFunc("/upto", uptoHandler)
+	http.HandleFunc("/between", betweenHandler)
 
 	http.ListenAndServe(host, nil)
 }
@@ -33,24 +36,70 @@ func rootHandler(w http.ResponseWriter, r *http.Request) {
 
 func isHandler(w http.ResponseWriter, r *http.Request) {
 	var res XData
-	var err error
 	xstr := r.URL.Query().Get("x")
 	if xstr == "" {
 		res = XData{"", "", ""}
 	} else {
 		xint, err := strconv.Atoi(xstr)
 		if err != nil {
-			res = XData{xstr, "", "Ooops. Input isn't a number."}
+			res = XData{xstr, "", "Ooops. Not a number."}
+		} else if xint > primedata.MaxInt {
+			res = XData{xstr, "", "Ooops. Number too large."}
 		} else {
-			if xint > primedata.MaxInt {
-				res = XData{xstr, "", "Ooops. Input is too large. "}
-			} else {
-				xres := primedata.Is(xint)
-				res = XData{xstr, strconv.FormatBool(xres), ""}
-			}
+			xres := primedata.Is(xint)
+			res = XData{xstr, strconv.FormatBool(xres), ""}
 		}
 	}
-	err = t.ExecuteTemplate(w, "is.gohtml", res)
+	err := t.ExecuteTemplate(w, "is.gohtml", res)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func uptoHandler(w http.ResponseWriter, r *http.Request) {
+	var res XData
+	xstr := r.URL.Query().Get("x")
+	if xstr == "" {
+		res = XData{"", "", ""}
+	} else {
+		xint, err := strconv.Atoi(xstr)
+		if err != nil {
+			res = XData{xstr, "", "Ooops. Not a number."}
+		} else if xint > primedata.MaxInt {
+			res = XData{xstr, "", "Ooops. Number too large."}
+		} else {
+			xres := "UPTO RESULT"
+			res = XData{xstr, xres, ""}
+		}
+	}
+	err := t.ExecuteTemplate(w, "upto.gohtml", res)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func betweenHandler(w http.ResponseWriter, r *http.Request) {
+	var res XyData
+	xstr := r.URL.Query().Get("x")
+	ystr := r.URL.Query().Get("y")
+	if xstr == "" && ystr == "" {
+		res = XyData{"", "", "", ""}
+	} else {
+		xint, xerr := strconv.Atoi(xstr)
+		yint, yerr := strconv.Atoi(ystr)
+		if xerr != nil || yerr != nil {
+			res = XyData{xstr, ystr, "", "Ooops. Not a number."}
+		} else if xint > primedata.MaxInt || yint > primedata.MaxInt {
+			res = XyData{xstr, ystr, "", "Ooops. Number too large."}
+		} else {
+			if xint > yint {
+				xint, yint = yint, xint
+			}
+			xyres := format.Between(xint, yint, "", ", ", "")
+			res = XyData{xstr, ystr, xyres, ""}
+		}
+	}
+	err := t.ExecuteTemplate(w, "between.gohtml", res)
 	if err != nil {
 		log.Fatal(err)
 	}
